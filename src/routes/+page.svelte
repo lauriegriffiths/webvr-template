@@ -1,8 +1,10 @@
 <script>
 	import { Canvas } from '@threlte/core';
-	import Scene from '$lib/Scene.svelte';
+	import VRScene from '$lib/VRScene.svelte';
+	import { VRButton } from '@threlte/xr';
 </script>
 
 <Canvas>
-	<Scene />
+	<VRScene />
 </Canvas>
+<VRButton />
