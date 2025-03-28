@@ -12,10 +12,38 @@
 
 	const scale = new Spring(1);
 
-	let rotation = 0;
+	let rotating = $state(true);
+
+	let rotation = $state(0);
 	useTask((delta) => {
-		rotation += delta;
+		if (rotating) {
+			rotation += delta;
+		}
 	});
+
+	const colors = ['red', 'blue', 'green'];
+
+	let color = $state('red');
+
+	const changeColor = () => {
+		const currentIndex = colors.indexOf(color);
+		const nextIndex = (currentIndex + 1) % colors.length;
+		color = colors[nextIndex];
+	};
+
+	const onpinchstart = () => {
+		scale.target = 2;
+	};
+	const onpinchend = () => {
+		scale.target = 1;
+	};
+
+	const onleftpinchstart = () => {
+		rotating = false;
+	};
+	const onleftpinchend = () => {
+		rotating = true;
+	};
 </script>
 
 {@debug joint}
@@ -41,10 +69,11 @@
 	onpointerleave={() => {
 		scale.target = 1;
 	}}
+	onclick={changeColor}
 	castShadow
 >
 	<T.BoxGeometry args={[0.2, 0.6, 0.2]} />
-	<T.MeshStandardMaterial color="hotpink" />
+	<T.MeshStandardMaterial {color} />
 </T.Mesh>
 
 <T.Mesh rotation.x={-Math.PI / 2} receiveShadow>
@@ -55,5 +84,5 @@
 <XR />
 <Controller left />
 <Controller right />
-<Hand left />
-<Hand right />
+<Hand left onpinchstart={onleftpinchstart} onpinchend={onleftpinchend} />
+<Hand right {onpinchstart} {onpinchend} />
