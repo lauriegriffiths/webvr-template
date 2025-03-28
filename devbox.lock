@@ -1,0 +1,153 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "resolved": "github:NixOS/nixpkgs/bd3bac8bfb542dbde7ffffb6987a1a1f9d41699f?lastModified=1743014863&narHash=sha256-jAIUqsiN2r3hCuHji80U7NNEafpIMBXiwKlSrjWMlpg%3D"
+    },
+    "imagemagick@latest": {
+      "last_modified": "2025-03-22T01:19:59Z",
+      "resolved": "github:NixOS/nixpkgs/0740f6f238767d4caf9afe774d3e88105766dfc6#imagemagick",
+      "source": "devbox-search",
+      "version": "7.1.1-45",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/bin5a2dx0q127b14kxfx9si70k114mwx-imagemagick-7.1.1-45",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/98mlawc2qvcpd9ivgir6lz1kc714ss0r-imagemagick-7.1.1-45-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/9kzc18ldh6a2bs8llkdbjkrhlvpdcaxx-imagemagick-7.1.1-45-doc"
+            }
+          ],
+          "store_path": "/nix/store/bin5a2dx0q127b14kxfx9si70k114mwx-imagemagick-7.1.1-45"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/224kqmwx3r089dcj162v9vkddcislf0r-imagemagick-7.1.1-45",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/im1w039iaqj2d8akprx6knfjb4zyzj36-imagemagick-7.1.1-45-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/gdd8q1h7xirdhjs58gyf9s9p8icf0wqa-imagemagick-7.1.1-45-doc"
+            }
+          ],
+          "store_path": "/nix/store/224kqmwx3r089dcj162v9vkddcislf0r-imagemagick-7.1.1-45"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/jf6ph1h9rq679rs8i0xyl73kk9j2n456-imagemagick-7.1.1-45",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/hk4a59v1ll2b3iym55l53z2bdkjvph21-imagemagick-7.1.1-45-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/lja8g745p48yryxpp0xhc7nk9dk7czkr-imagemagick-7.1.1-45-doc"
+            }
+          ],
+          "store_path": "/nix/store/jf6ph1h9rq679rs8i0xyl73kk9j2n456-imagemagick-7.1.1-45"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/sw56k2z6zj4n1ha32kc380v3fcyqf8mk-imagemagick-7.1.1-45",
+              "default": true
+            },
+            {
+              "name": "dev",
+              "path": "/nix/store/k4nr2x4lbbga7aqh1rhqbs6kbbp7bwcq-imagemagick-7.1.1-45-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/4k30yfyn9wwjmr7rd58m5kqfnh6abk10-imagemagick-7.1.1-45-doc"
+            }
+          ],
+          "store_path": "/nix/store/sw56k2z6zj4n1ha32kc380v3fcyqf8mk-imagemagick-7.1.1-45"
+        }
+      }
+    },
+    "nodejs@20": {
+      "last_modified": "2025-03-16T23:54:35Z",
+      "plugin_version": "0.0.2",
+      "resolved": "github:NixOS/nixpkgs/5d9b5431f967007b3952c057fc92af49a4c5f3b2#nodejs_20",
+      "source": "devbox-search",
+      "version": "20.19.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4i96rnl7hdzm3k3w36gx7d2p1af3b64q-nodejs-20.19.0",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/dvr6jyyhygpci5yj5mdl3p0xi2qcm02g-nodejs-20.19.0-libv8"
+            }
+          ],
+          "store_path": "/nix/store/4i96rnl7hdzm3k3w36gx7d2p1af3b64q-nodejs-20.19.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/vr3nq0bhrwlnm2prrcwk2m947smfpi87-nodejs-20.19.0",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/7xdmbic7ndn40ihqs9fgawcnr8x090nj-nodejs-20.19.0-libv8"
+            }
+          ],
+          "store_path": "/nix/store/vr3nq0bhrwlnm2prrcwk2m947smfpi87-nodejs-20.19.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4k73p2z9h5rnfv9gal8n6m4srx5sggs8-nodejs-20.19.0",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/px89hqr3wcfk0w6146hf4171bvj4chgp-nodejs-20.19.0-libv8"
+            }
+          ],
+          "store_path": "/nix/store/4k73p2z9h5rnfv9gal8n6m4srx5sggs8-nodejs-20.19.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/088a1y8kvrmvi7vm5ff67hg7c4hcnqg7-nodejs-20.19.0",
+              "default": true
+            },
+            {
+              "name": "libv8",
+              "path": "/nix/store/njqqwr5311xmnm05ms3n7b8piwnyq7x1-nodejs-20.19.0-libv8"
+            }
+          ],
+          "store_path": "/nix/store/088a1y8kvrmvi7vm5ff67hg7c4hcnqg7-nodejs-20.19.0"
+        }
+      }
+    }
+  }
+}
