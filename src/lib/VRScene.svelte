@@ -3,6 +3,7 @@
 	import { currentWritable, T, useTask } from '@threlte/core';
 	import { interactivity } from '@threlte/extras';
 	import { Spring } from 'svelte/motion';
+	import { AmbientLight } from 'three';
 
 	const joint = useHandJoint('left', 'wrist');
 	pointerControls('right');
@@ -59,6 +60,7 @@
 />
 
 <T.DirectionalLight position={[0, 10, 10]} castShadow />
+<T.AmbientLight />
 
 <T.Mesh
 	rotation.y={rotation}
