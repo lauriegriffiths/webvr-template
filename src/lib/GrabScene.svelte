@@ -1,19 +1,48 @@
 <script lang="ts">
-	import { XR, Controller, Hand, useHandJoint, pointerControls, useController } from '@threlte/xr';
+	import {
+		XR,
+		Controller,
+		Hand,
+		useHandJoint,
+		pointerControls,
+		useController,
+		useHand
+	} from '@threlte/xr';
 	import { currentWritable, T, useTask } from '@threlte/core';
 	import { interactivity } from '@threlte/extras';
 	import { Spring } from 'svelte/motion';
-	import { Collider } from '@threlte/rapier';
+	import { Collider, Debug } from '@threlte/rapier';
 	import { BoxGeometry } from 'three';
 	import { Text } from '@threlte/extras';
+	import { RigidBody } from '@dimforge/rapier3d-compat';
 
 	const joint = useHandJoint('right', 'thumb-tip');
+	const leftHand = useHand('left');
+
 	const rightController = useController('right');
 
-	const { x, y, z } = $derived(joint.current.position);
 	pointerControls('right');
 
 	interactivity();
+
+	let body: RigidBody = $props();
+	const { start, stop } = useTask(
+		() => {
+			if (joint.current === undefined || body === undefined) return;
+			const { x, y, z } = joint.current.position;
+			body.setNextKinematicTranslation({ x, y, z });
+		},
+		{ autoStart: false }
+	);
+	let radius = $derived(joint?.current?.jointRadius);
+
+	$effect(() => {
+		if (body && radius && $joint) {
+			start();
+		} else {
+			stop();
+		}
+	});
 
 	const scale = new Spring(1);
 
@@ -87,13 +116,21 @@
 <T.DirectionalLight position={[0, 10, 10]} castShadow />
 <T.AmbientLight />
 
-{#if joint.current}
+{#if radius}
+	<RigidBody bind:rigidBody={body} type="kinematicPosition">
+		<Collider shape="ball" args={[radius]} />
+		<T.SphereGeometry args={[0.5, 32, 32]} />
+		<T.MeshStandardMaterial color={'green'} />
+	</RigidBody>
+{/if}
+
+<!-- {#if joint.current}
 	<T.Group position={handColliderPosition}>
 		<Collider sensor shape={'cuboid'} args={[0.1, 0.1, 0.1]} />
 		<T.BoxGeometry args={[0.1, 0.1, 0.1]} />
 		<T.MeshStandardMaterial color={'green'} />
 	</T.Group>
-{/if}
+{/if} -->
 <Text
 	text={JSON.stringify(joint.current)}
 	color="purple"
@@ -135,3 +172,5 @@
 <Controller right />
 <Hand left onpinchstart={onleftpinchstart} onpinchend={onleftpinchend} />
 <Hand right {onpinchstart} {onpinchend} />
+
+<Debug />
