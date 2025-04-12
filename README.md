@@ -1,6 +1,6 @@
 # WebVR example project
 
-This is an example project showing how to use Threlte and WebVR
+This is an example project showing how to use Threlte and WebVR, with rapier physics too
 
 ## Development steps
 
