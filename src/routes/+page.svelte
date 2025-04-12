@@ -6,8 +6,12 @@
 </script>
 
 <Canvas>
-	<Studio>
+	{#if import.meta.env.VITE_ENABLE_STUDIO}
+		<Studio>
+			<VRScene />
+		</Studio>
+	{:else}
 		<VRScene />
-	</Studio>
+	{/if}
 </Canvas>
 <VRButton />

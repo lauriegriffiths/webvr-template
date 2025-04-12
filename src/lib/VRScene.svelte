@@ -3,7 +3,7 @@
 	import { currentWritable, T, useTask } from '@threlte/core';
 	import { interactivity } from '@threlte/extras';
 	import { Spring } from 'svelte/motion';
-	import { AmbientLight } from 'three';
+	import Doghead from './doghead.svelte';
 
 	const joint = useHandJoint('left', 'wrist');
 	pointerControls('right');
@@ -58,6 +58,19 @@
 
 <T.DirectionalLight position={[0, 10, 10]} castShadow />
 <T.AmbientLight />
+<Doghead
+	position={[0, 1, 0]}
+	rotation={[0, rotation, 0]}
+	scale={scale.current}
+	onpointerenter={() => {
+		scale.target = 1.2;
+	}}
+	onpointerleave={() => {
+		scale.target = 1;
+	}}
+	onclick={changeColor}
+	castShadow
+/>
 
 <T.Mesh
 	rotation.y={rotation}
@@ -71,12 +84,13 @@
 	}}
 	onclick={changeColor}
 	castShadow
+	position={[-1, 1, -1]}
 >
 	<T.BoxGeometry args={[0.2, 0.6, 0.2]} />
 	<T.MeshStandardMaterial {color} />
 </T.Mesh>
 
-<T.Mesh rotation.x={-Math.PI / 2} receiveShadow>
+<T.Mesh rotation.x={-Math.PI / 2} receiveShadow position={[0, 0, 0]}>
 	<T.CircleGeometry args={[4, 40]} />
 	<T.MeshStandardMaterial color="white" />
 </T.Mesh>
