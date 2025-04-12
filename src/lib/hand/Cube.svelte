@@ -21,10 +21,10 @@
 				</RigidBody>
 			{:else}
 				<RigidBody>
-					<T.BoxGeometry args={[size, size, size]} />
-					<T.MeshStandardMaterial roughness={0} metalness={0.2} color={colors[index]} />
 					<Collider shape="cuboid" args={[size / 2, size / 2, size / 2]} />
 					<Instance color="blue" />
+					<T.BoxGeometry args={[size, size, size]} />
+					<T.MeshStandardMaterial roughness={0} metalness={0.2} color={colors[index]} />
 				</RigidBody>
 			{/if}
 		{/each}
