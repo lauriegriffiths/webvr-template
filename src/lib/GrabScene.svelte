@@ -130,13 +130,15 @@
 <T.DirectionalLight position={[0, 10, 10]} castShadow />
 <T.AmbientLight />
 
-<RigidBody bind:rigidBody={body} type="kinematicPosition">
-	<Collider shape="ball" args={[0.1]} />
-	<T.Mesh>
-		<T.SphereGeometry args={[0.1]} />
-		<T.MeshStandardMaterial color={'green'} />
-	</T.Mesh>
-</RigidBody>
+{#if joint.jointRadius}
+	<RigidBody bind:rigidBody={body} type="kinematicPosition">
+		<Collider shape="ball" args={[0.1]} />
+		<T.Mesh>
+			<T.SphereGeometry args={[0.1]} />
+			<T.MeshStandardMaterial color={'green'} />
+		</T.Mesh>
+	</RigidBody>
+{/if}
 
 <T.Group position={[0, 1, 0]}>
 	<RigidBody bind:rigidBody={otherBody} type="kinematicPosition">
