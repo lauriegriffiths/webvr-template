@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@dimforge/rapier3d-compat':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       '@sveltejs/adapter-static':
         specifier: ^3.0.8
