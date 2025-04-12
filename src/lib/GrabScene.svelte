@@ -14,7 +14,7 @@
 	import { RigidBody, Collider, Debug } from '@threlte/rapier';
 	import { BoxGeometry } from 'three';
 	import { Text } from '@threlte/extras';
-	const joint = useHandJoint('right', 'thumb-tip');
+	const joint = useHandJoint('left', 'thumb-tip');
 	const leftHand = useHand('left');
 	import type { RigidBody as RapierRigidBody } from '@dimforge/rapier3d-compat';
 
@@ -33,7 +33,7 @@
 			const { x, y, z } = joint.current.position;
 			body.setNextKinematicTranslation({ x, y, z });
 		},
-		{ autoStart: true }
+		{ autoStart: false }
 	);
 	let radius = $derived(joint?.current?.jointRadius);
 
@@ -87,7 +87,7 @@
 	let touching = $state(false);
 
 	const onpinchstart = () => {
-		if (touching) {
+		if (touching || true) {
 			dragging = true;
 		}
 	};
@@ -105,15 +105,15 @@
 		scale.target = scale.target * 1.1;
 	};
 
-	useTask((delta) => {
-		if (dragging) {
-			if (joint.current) {
-				const { x, y, z } = joint.current.position;
-				// const { x: x2, y: y2, z: z2 } = joint.current.rotation;
-				console.log('joint', x, y, z);
-			}
-		}
-	});
+	// useTask(() => {
+	// 	if (dragging) {
+	// 		if (joint.current) {
+	// 			const { x, y, z } = joint.current.position;
+	// 			// const { x: x2, y: y2, z: z2 } = joint.current.rotation;
+	// 			console.log('joint', x, y, z);
+	// 		}
+	// 	}
+	// });
 	$effect(() => {
 		console.log(otherBody);
 	});
@@ -130,19 +130,17 @@
 <T.DirectionalLight position={[0, 10, 10]} castShadow />
 <T.AmbientLight />
 
-<T.Group position={[0, 1, 0]}>
-	<RigidBody bind:rigidBody={body} type="kinematicPosition">
-		<Collider shape="ball" args={[0.5]} />
-		<T.Mesh>
-			<T.SphereGeometry args={[0.5]} />
-			<T.MeshStandardMaterial color={'green'} />
-		</T.Mesh>
-	</RigidBody>
-</T.Group>
+<RigidBody bind:rigidBody={body} type="kinematicPosition">
+	<Collider shape="ball" args={[0.1]} />
+	<T.Mesh>
+		<T.SphereGeometry args={[0.1]} />
+		<T.MeshStandardMaterial color={'green'} />
+	</T.Mesh>
+</RigidBody>
 
 <T.Group position={[0, 1, 0]}>
 	<RigidBody bind:rigidBody={otherBody} type="kinematicPosition">
-		<Collider shape="ball" args={[0.5]} />
+		<Collider shape="ball" args={[0.1]} />
 		<T.Mesh>
 			<T.SphereGeometry args={[0.5]} />
 			<T.MeshStandardMaterial color={'blue'} />
@@ -199,7 +197,7 @@
 <XR>
 	<Controller left />
 	<Controller right />
-	<Hand left onpinchstart={onleftpinchstart} onpinchend={onleftpinchend} />
+	<Hand left />
 	<Hand right {onpinchstart} {onpinchend} />
 </XR>
 
