@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { XR, Controller, Hand, useHandJoint, pointerControls } from '@threlte/xr';
+	import { XR, Controller, Hand, useHandJoint, pointerControls, useController } from '@threlte/xr';
 	import { currentWritable, T, useTask } from '@threlte/core';
 	import { interactivity } from '@threlte/extras';
 	import { Spring } from 'svelte/motion';
@@ -8,6 +8,9 @@
 	import { Text } from '@threlte/extras';
 
 	const joint = useHandJoint('right', 'thumb-tip');
+	const rightController = useController('right');
+
+	const { x, y, z } = $derived(joint.current.position);
 	pointerControls('right');
 
 	interactivity();
@@ -92,7 +95,7 @@
 	</T.Group>
 {/if}
 <Text
-	text={JSON.stringify(handColliderPosition)}
+	text={JSON.stringify(rightController.current)}
 	color="purple"
 	fontSize={0.5}
 	anchorX="50%"
