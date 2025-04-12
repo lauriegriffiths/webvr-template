@@ -7,18 +7,25 @@
 	const limit = 5;
 	const startColor = 'hotpink';
 	let colors = $state(Array(limit).fill(startColor));
+	const letters = ['日', '本', '語', 'は', '難', 'し'];
 </script>
 
 <T.Group position={[0, 0.8, 0]}>
-	{#each { length: limit } as _, index (index)}
+	{#each letters as letter, index (index)}
 		<RigidBody onsensorenter={() => (colors[index] = 'blue')}>
 			<Collider shape="cuboid" args={[size / 2, size / 2, size / 2]} />
-			<!-- <AutoColliders shape={'trimesh'}> -->
-			<T.Mesh>
-				<Text3DGeometry curveSegments={12} text="本" size={0.1} depth={0.03} font={'noto.json'} />
-				<T.MeshStandardMaterial color={colors[index]} toneMapped={false} />
-			</T.Mesh>
-			<!-- </AutoColliders> -->
+			<AutoColliders shape={'convexHull'}>
+				<T.Mesh>
+					<Text3DGeometry
+						curveSegments={1}
+						text={letter}
+						size={0.1}
+						depth={0.03}
+						font={'noto.json'}
+					/>
+					<T.MeshStandardMaterial color={'blue'} toneMapped={false} />
+				</T.Mesh>
+			</AutoColliders>
 			<!-- <T.Mesh>
 				<T.BoxGeometry args={[size, size, size]} />
 				<T.MeshStandardMaterial roughness={0} metalness={0.2} color={colors[index]} />
