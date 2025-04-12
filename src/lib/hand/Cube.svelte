@@ -14,7 +14,7 @@
 		<RigidBody onsensorenter={() => (colors[index] = 'blue')}>
 			<Collider shape="cuboid" args={[size / 2, size / 2, size / 2]} />
 			<T.Mesh>
-				<Text3DGeometry curveSegments={12} text="本" size={0.1} depth={0.03} font={'noto.json'} />
+				<Text3DGeometry curveSegments={12} text="本" size={0.1} depth={0.03} font={'/noto.json'} />
 				<T.MeshStandardMaterial color={colors[index]} toneMapped={false} />
 			</T.Mesh>
 			<!-- <T.Mesh>
