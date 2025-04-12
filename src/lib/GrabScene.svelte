@@ -129,7 +129,7 @@
 <T.DirectionalLight position={[0, 10, 10]} castShadow />
 <T.AmbientLight />
 
-{#if radius}
+{#if joint}
 	<T.Group position={[0, 1, 0]}>
 		<RigidBody bind:rigidBody={body} type="kinematicPosition">
 			<Collider shape="ball" args={[0.5]} />
@@ -150,19 +150,22 @@
 		</T.Mesh>
 	</RigidBody>
 </T.Group>
-<!-- {#if joint.current}
-	<T.Group position={handColliderPosition}>
-		<Collider sensor shape={'cuboid'} args={[0.1, 0.1, 0.1]} />
-		<T.BoxGeometry args={[0.1, 0.1, 0.1]} />
-		<T.MeshStandardMaterial color={'green'} />
-	</T.Group>
-{/if} -->
 
 <Text
-	text={JSON.stringify(otherBody)}
+	text={JSON.stringify(body)}
 	color="purple"
 	fontSize={0.5}
 	anchorX="50%"
+	anchorY="100%"
+	oncreate={(ref) => {
+		ref.lookAt(10, 10, 10);
+	}}
+/>
+<Text
+	text={JSON.stringify(joint)}
+	color="green"
+	fontSize={0.2}
+	anchorX="60%"
 	anchorY="100%"
 	oncreate={(ref) => {
 		ref.lookAt(10, 10, 10);
