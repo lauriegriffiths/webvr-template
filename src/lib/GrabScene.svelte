@@ -16,6 +16,7 @@
 	import { Text } from '@threlte/extras';
 	const joint = useHandJoint('right', 'thumb-tip');
 	const leftHand = useHand('left');
+	import type { RigidBody as RapierRigidBody } from '@dimforge/rapier3d-compat';
 
 	const rightController = useController('right');
 
@@ -23,8 +24,8 @@
 
 	interactivity();
 
-	let body: typeof RigidBody | undefined = $state();
-	let otherBody: typeof RigidBody | undefined = $state();
+	let body: typeof RapierRigidBody | undefined = $state();
+	let otherBody: typeof RapierRigidBody | undefined = $state();
 
 	const { start, stop } = useTask(
 		() => {
@@ -195,10 +196,11 @@
 	<T.MeshStandardMaterial color="white" />
 </T.Mesh>
 
-<XR />
-<Controller left />
-<Controller right />
-<Hand left onpinchstart={onleftpinchstart} onpinchend={onleftpinchend} />
-<Hand right {onpinchstart} {onpinchend} />
+<XR>
+	<Controller left />
+	<Controller right />
+	<Hand left onpinchstart={onleftpinchstart} onpinchend={onleftpinchend} />
+	<Hand right {onpinchstart} {onpinchend} />
+</XR>
 
 <Debug />
