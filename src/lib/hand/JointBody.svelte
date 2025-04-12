@@ -3,6 +3,7 @@
 	import { handJoints, useHandJoint } from '@threlte/xr';
 	import type { RigidBody as RapierRigidBody } from '@dimforge/rapier3d-compat';
 	import { Collider, RigidBody } from '@threlte/rapier';
+	import { T } from '@threlte/core';
 
 	export let jointIndex: number;
 	export let hand: 'left' | 'right';
@@ -33,5 +34,7 @@
 {#if radius}
 	<RigidBody bind:rigidBody={body} type="kinematicPosition">
 		<Collider shape="ball" args={[radius]} />
+		<T.SphereGeometry args={[radius]} />
+		<T.MeshStandardMaterial color="hotpink" />
 	</RigidBody>
 {/if}
