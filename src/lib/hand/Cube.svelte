@@ -14,7 +14,7 @@
 		<T.MeshStandardMaterial roughness={0} metalness={0.2} {color} />
 
 		{#each { length: limit } as _, index (index)}
-			<RigidBody onsensorenter={() => (color = 'blue')} type="kinematicPosition">
+			<RigidBody onsensorenter={() => (color = 'blue')}>
 				<Collider shape="cuboid" args={[size / 2, size / 2, size / 2]} />
 				<Instance color="hotpink" />
 			</RigidBody>
