@@ -11,11 +11,9 @@
 	import { currentWritable, T, useTask } from '@threlte/core';
 	import { interactivity } from '@threlte/extras';
 	import { Spring } from 'svelte/motion';
-	import { Collider, Debug } from '@threlte/rapier';
+	import { RigidBody, Collider, Debug } from '@threlte/rapier';
 	import { BoxGeometry } from 'three';
 	import { Text } from '@threlte/extras';
-	import { RigidBody } from '@dimforge/rapier3d-compat';
-
 	const joint = useHandJoint('right', 'thumb-tip');
 	const leftHand = useHand('left');
 
@@ -25,7 +23,9 @@
 
 	interactivity();
 
-	let body: RigidBody = $state();
+	let body: typeof RigidBody | undefined = $state();
+	let otherBody: typeof RigidBody | undefined = $state();
+
 	const { start, stop } = useTask(
 		() => {
 			if (joint.current === undefined || body === undefined) return;
@@ -35,6 +35,24 @@
 		{ autoStart: false }
 	);
 	let radius = $derived(joint?.current?.jointRadius);
+
+	let count = $state(0);
+	let change = $state(1);
+
+	useTask((delta) => {
+		count += change * delta;
+		if (count > 2) {
+			change *= -1;
+			// count = 0;
+		} else if (count < 0) {
+			change *= -1;
+		}
+
+		if (otherBody) {
+			const [x, y, z] = [1, 2, 3];
+			otherBody.setNextKinematicTranslation({ x: count, y, z });
+		}
+	});
 
 	$effect(() => {
 		if (body && radius && $joint) {
@@ -86,7 +104,7 @@
 		scale.target = scale.target * 1.1;
 	};
 
-	useTask(() => {
+	useTask((delta) => {
 		if (dragging) {
 			if (joint.current) {
 				const { x, y, z } = joint.current.position;
@@ -94,6 +112,9 @@
 				console.log('joint', x, y, z);
 			}
 		}
+	});
+	$effect(() => {
+		console.log(otherBody);
 	});
 </script>
 
@@ -110,12 +131,23 @@
 
 {#if radius}
 	<RigidBody bind:rigidBody={body} type="kinematicPosition">
-		<Collider shape="ball" args={[radius]} />
-		<T.SphereGeometry args={[0.5, 32, 32]} />
-		<T.MeshStandardMaterial color={'green'} />
+		<Collider shape="ball" args={[0.5]} />
+		<T.Mesh>
+			<T.SphereGeometry args={[0.5, 32, 32]} />
+			<T.MeshStandardMaterial color={'green'} />
+		</T.Mesh>
 	</RigidBody>
 {/if}
 
+<T.Group position={[0, 1, 0]}>
+	<RigidBody bind:rigidBody={otherBody} type="kinematicPosition">
+		<Collider shape="ball" args={[0.5]} />
+		<T.Mesh>
+			<T.SphereGeometry args={[0.5]} />
+			<T.MeshStandardMaterial color={'blue'} />
+		</T.Mesh>
+	</RigidBody>
+</T.Group>
 <!-- {#if joint.current}
 	<T.Group position={handColliderPosition}>
 		<Collider sensor shape={'cuboid'} args={[0.1, 0.1, 0.1]} />
@@ -123,8 +155,9 @@
 		<T.MeshStandardMaterial color={'green'} />
 	</T.Group>
 {/if} -->
+
 <Text
-	text={JSON.stringify(joint.current)}
+	text={JSON.stringify(otherBody)}
 	color="purple"
 	fontSize={0.5}
 	anchorX="50%"
