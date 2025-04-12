@@ -32,7 +32,7 @@
 			const { x, y, z } = joint.current.position;
 			body.setNextKinematicTranslation({ x, y, z });
 		},
-		{ autoStart: false }
+		{ autoStart: true }
 	);
 	let radius = $derived(joint?.current?.jointRadius);
 
@@ -129,17 +129,15 @@
 <T.DirectionalLight position={[0, 10, 10]} castShadow />
 <T.AmbientLight />
 
-{#if joint}
-	<T.Group position={[0, 1, 0]}>
-		<RigidBody bind:rigidBody={body} type="kinematicPosition">
-			<Collider shape="ball" args={[0.5]} />
-			<T.Mesh>
-				<T.SphereGeometry args={[0.5]} />
-				<T.MeshStandardMaterial color={'green'} />
-			</T.Mesh>
-		</RigidBody>
-	</T.Group>
-{/if}
+<T.Group position={[0, 1, 0]}>
+	<RigidBody bind:rigidBody={body} type="kinematicPosition">
+		<Collider shape="ball" args={[0.5]} />
+		<T.Mesh>
+			<T.SphereGeometry args={[0.5]} />
+			<T.MeshStandardMaterial color={'green'} />
+		</T.Mesh>
+	</RigidBody>
+</T.Group>
 
 <T.Group position={[0, 1, 0]}>
 	<RigidBody bind:rigidBody={otherBody} type="kinematicPosition">
@@ -152,7 +150,7 @@
 </T.Group>
 
 <Text
-	text={JSON.stringify(body)}
+	text={JSON.stringify(leftHand)}
 	color="purple"
 	fontSize={0.5}
 	anchorX="50%"
