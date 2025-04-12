@@ -5,6 +5,7 @@ This is an example project showing how to use Threlte and WebVR
 ## Development steps
 
 - Install devbox
+- curl -fsSL https://get.jetify.com/devbox | bash
 - Use `devbox shell` to open a shell
 - Use `pnpm install` to install packages
 - Run the example project with `pnpm dev`
