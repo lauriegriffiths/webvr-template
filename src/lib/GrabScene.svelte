@@ -133,7 +133,7 @@
 	<RigidBody bind:rigidBody={body} type="kinematicPosition">
 		<Collider shape="ball" args={[0.5]} />
 		<T.Mesh>
-			<T.SphereGeometry args={[0.5, 32, 32]} />
+			<T.SphereGeometry args={[0.5]} />
 			<T.MeshStandardMaterial color={'green'} />
 		</T.Mesh>
 	</RigidBody>

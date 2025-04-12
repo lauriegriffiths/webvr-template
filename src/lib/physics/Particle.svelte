@@ -16,6 +16,7 @@
 	const { position, rotation } = $props();
 
 	let color = $state('red');
+	let body: typeof RigidBody = $state();
 
 	const audios: {
 		threshold: number;
@@ -33,10 +34,19 @@
 		};
 	});
 
-	const changeColor = (e) => {
-		console.log('colorchange');
+	const changeColorBounce = (e) => {
+		const currentTranslation = body.translation();
+		console.log(body);
+		const { x, y, z } = currentTranslation;
+
+		// body.setTranslation({ x, y: y + 1, z });
+		body.setLinvel({ x: 0, y: 10, z: 0 });
 		color = 'blue';
 		e.stopPropagation();
+	};
+	const bounce = (e) => {
+		e.stopPropagation();
+		console.log(e);
 	};
 
 	let rotationCasted = $derived(rotation ? rotation?.toArray() : [0, 0, 0]);
@@ -48,9 +58,16 @@
 	position.z={position?.z}
 	rotation={rotationCasted}
 >
-	<RigidBody type={'dynamic'} oncontact={() => {}}>
+	<RigidBody type={'dynamic'} oncontact={() => {}} bind:rigidBody={body}>
 		<Collider contactForceEventThreshold={30} restitution={0.4} shape={'ball'} args={[0.5]} />
-		<T.Mesh castShadow receiveShadow {geometry} onclick={changeColor}>
+		<T.Mesh
+			castShadow
+			receiveShadow
+			{geometry}
+			onclick={(e) => {
+				changeColorBounce(e);
+			}}
+		>
 			<T.MeshStandardMaterial {color} />
 		</T.Mesh>
 	</RigidBody>
