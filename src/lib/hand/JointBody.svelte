@@ -34,7 +34,9 @@
 {#if radius}
 	<RigidBody bind:rigidBody={body} type="kinematicPosition">
 		<Collider shape="ball" args={[radius]} />
-		<T.SphereGeometry args={[radius]} />
-		<T.MeshStandardMaterial color="hotpink" />
+		<T.Mesh>
+			<T.SphereGeometry args={[radius]} />
+			<T.MeshStandardMaterial color="hotpink" />
+		</T.Mesh>
 	</RigidBody>
 {/if}
