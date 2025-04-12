@@ -36,7 +36,6 @@
 
 	const changeColorBounce = (e) => {
 		const currentTranslation = body.translation();
-		console.log(body);
 		const { x, y, z } = currentTranslation;
 
 		// body.setTranslation({ x, y: y + 1, z });
@@ -46,7 +45,6 @@
 	};
 	const bounce = (e) => {
 		e.stopPropagation();
-		console.log(e);
 	};
 
 	let rotationCasted = $derived(rotation ? rotation?.toArray() : [0, 0, 0]);

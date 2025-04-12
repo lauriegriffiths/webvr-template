@@ -130,13 +130,15 @@
 <T.AmbientLight />
 
 {#if radius}
-	<RigidBody bind:rigidBody={body} type="kinematicPosition">
-		<Collider shape="ball" args={[0.5]} />
-		<T.Mesh>
-			<T.SphereGeometry args={[0.5]} />
-			<T.MeshStandardMaterial color={'green'} />
-		</T.Mesh>
-	</RigidBody>
+	<T.Group position={[0, 1, 0]}>
+		<RigidBody bind:rigidBody={body} type="kinematicPosition">
+			<Collider shape="ball" args={[0.5]} />
+			<T.Mesh>
+				<T.SphereGeometry args={[0.5]} />
+				<T.MeshStandardMaterial color={'green'} />
+			</T.Mesh>
+		</RigidBody>
+	</T.Group>
 {/if}
 
 <T.Group position={[0, 1, 0]}>
