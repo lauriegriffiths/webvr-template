@@ -10,6 +10,8 @@
 
 	let body: RapierRigidBody;
 
+	$: handJointName = handJoints[jointIndex];
+
 	const joint = useHandJoint(hand, handJoints[jointIndex]!);
 
 	const { start, stop } = useTask(
@@ -34,9 +36,11 @@
 {#if radius}
 	<RigidBody bind:rigidBody={body} type="kinematicPosition">
 		<Collider shape="ball" args={[radius]} />
-		<T.Mesh>
-			<T.SphereGeometry args={[radius]} />
-			<T.MeshStandardMaterial color="hotpink" />
-		</T.Mesh>
+		{#if handJointName === 'index-finger-tip'}
+			<T.Mesh>
+				<T.SphereGeometry args={[radius * 2]} />
+				<T.MeshStandardMaterial color="hotpink" />
+			</T.Mesh>
+		{/if}
 	</RigidBody>
 {/if}
