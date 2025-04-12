@@ -3,9 +3,9 @@
 	import { currentWritable, T, useTask } from '@threlte/core';
 	import { interactivity } from '@threlte/extras';
 	import { Spring } from 'svelte/motion';
-	import Doghead from './doghead.svelte';
+	import { Collider } from '@threlte/rapier';
 
-	const joint = useHandJoint('left', 'wrist');
+	const joint = useHandJoint('right', 'thumb-tip');
 	pointerControls('right');
 
 	interactivity();
@@ -30,12 +30,16 @@
 		const nextIndex = (currentIndex + 1) % colors.length;
 		color = colors[nextIndex];
 	};
+	let dragging = $state(false);
+	let touching = $state(false);
 
 	const onpinchstart = () => {
-		scale.target = 2;
+		if (touching) {
+			dragging = true;
+		}
 	};
 	const onpinchend = () => {
-		scale.target = 1;
+		dragging = false;
 	};
 
 	const onleftpinchstart = () => {
@@ -47,9 +51,17 @@
 	const makeBigger = () => {
 		scale.target = scale.target * 1.1;
 	};
-</script>
 
-{@debug joint}
+	useTask(() => {
+		if (dragging) {
+			if (joint.current) {
+				const { x, y, z } = joint.current.position;
+				// const { x: x2, y: y2, z: z2 } = joint.current.rotation;
+				console.log('joint', x, y, z);
+			}
+		}
+	});
+</script>
 
 <T.PerspectiveCamera
 	makeDefault
@@ -76,6 +88,13 @@
 	castShadow
 	position={[-1, 1, -1]}
 >
+	<Collider
+		onsensorenter={() => (touching = true)}
+		onsensorexit={() => (touching = false)}
+		sensor
+		shape={'cuboid'}
+		args={[1, 1, 1]}
+	/>
 	<T.SphereGeometry args={[0.5, 32, 32]} />
 	<T.MeshStandardMaterial {color} />
 </T.Mesh>
