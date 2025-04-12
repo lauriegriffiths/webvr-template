@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import { OrbitControls, AudioListener } from '@threlte/extras';
-	import { Debug } from '@threlte/rapier';
 	import Emitter from '$lib/physics/Emitter.svelte';
 	import Ground from '$lib/physics/Ground.svelte';
 	import { XR, Controller, Hand } from '@threlte/xr';

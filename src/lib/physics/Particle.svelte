@@ -1,7 +1,6 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	// const geometry = new BoxGeometry(1, 1, 1);
 	const geometry = new SphereGeometry(0.5, 32, 32);
-	const material = new MeshStandardMaterial();
 	export const muted = writable(true);
 </script>
 
