@@ -1,35 +1,45 @@
 <script lang="ts">
-	import { T } from '@threlte/core';
-	import { Text3DGeometry, InstancedMesh, Instance } from '@threlte/extras';
+	import { T, useLoader } from '@threlte/core';
+	import { useSuspense, Text3DGeometry, InstancedMesh, Instance, Suspense } from '@threlte/extras';
 	import { AutoColliders, Collider, RigidBody } from '@threlte/rapier';
+	import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 
 	const size = 0.02;
 	const limit = 5;
 	const startColor = 'hotpink';
 	let colors = $state(Array(limit).fill(startColor));
-	const letters = ['日', '本', '語', 'は', '難', 'し'];
+	const letters = [
+		'',
+		'あ',
+		'い',
+		'う',
+		'え',
+		'お',
+		'か',
+		'き',
+		'く',
+		'け',
+		'こ',
+		'さ',
+		'し',
+		'す',
+		'せ',
+		'そ'
+	];
+	let font = useLoader(FontLoader).load('noto.json');
 </script>
 
-<T.Group position={[0, 0.8, 0]}>
-	{#each letters as letter, index (index)}
-		<RigidBody onsensorenter={() => (colors[index] = 'blue')}>
-			<Collider shape="cuboid" args={[size / 2, size / 2, size / 2]} />
-			<!-- <AutoColliders shape={'trimesh'}> -->
-			<T.Mesh>
-				<Text3DGeometry
-					curveSegments={1}
-					text={letter}
-					size={0.1}
-					depth={0.03}
-					font={'noto.json'}
-				/>
-				<T.MeshStandardMaterial color={'blue'} toneMapped={false} />
-			</T.Mesh>
-			<!-- </AutoColliders> -->
-			<!-- <T.Mesh>
-				<T.BoxGeometry args={[size, size, size]} />
-				<T.MeshStandardMaterial roughness={0} metalness={0.2} color={colors[index]} />
-			</T.Mesh> -->
-		</RigidBody>
+{#if $font}
+	{#each letters as letter, index (index + 1)}
+		<T.Group position={[0.1 * (index + 1), 1, 0]}>
+			<RigidBody type={'dynamic'} onsensorenter={() => (colors[index] = 'blue')}>
+				<AutoColliders shape={'convexHull'}>
+					<T.Mesh>
+						<Text3DGeometry curveSegments={4} text={letter} size={0.2} depth={0.03} font={$font} />
+						<T.MeshStandardMaterial color={'pink'} toneMapped={false} />
+					</T.Mesh>
+				</AutoColliders>
+			</RigidBody>
+		</T.Group>
 	{/each}
-</T.Group>
+{/if}

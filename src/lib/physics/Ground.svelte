@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
-	import { AutoColliders } from '@threlte/rapier';
+	import { AutoColliders, Collider, RigidBody } from '@threlte/rapier';
 </script>
 
 <T.Group position={[0, -0.5, 0]} onclick={() => console.log('ground clicked')}>
-	<AutoColliders shape={'cuboid'}>
-		<T.Mesh receiveShadow>
-			<T.BoxGeometry args={[10, 1, 10]} />
-			<T.MeshStandardMaterial color={'gray'} />
-		</T.Mesh>
-	</AutoColliders>
+	<RigidBody type={'fixed'}>
+		<AutoColliders shape={'cuboid'}>
+			<T.Mesh receiveShadow>
+				<T.BoxGeometry args={[10, 1, 10]} />
+				<T.MeshStandardMaterial color={'green'} />
+			</T.Mesh>
+		</AutoColliders>
+	</RigidBody>
 </T.Group>

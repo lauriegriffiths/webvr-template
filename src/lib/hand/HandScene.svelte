@@ -25,8 +25,11 @@
 
 <Cubes />
 <Ground />
-
-<T.PerspectiveCamera makeDefault position={[1, 1, 1]} oncreate={(ref) => ref.lookAt(0, 0.5, 0)} />
+<T.PerspectiveCamera
+	makeDefault
+	position={[0.5, 1, 5.2]}
+	oncreate={(ref) => ref.lookAt(0, 0.5, 0)}
+/>
 
 <T.AmbientLight />
 
@@ -40,10 +43,11 @@
 	target.y={1.8}
 	target.z={0}
 />
+<!-- <Debug /> -->
 
 <!-- <T.Mesh position={[0, 1.7, 0]}>
 	<Text3DGeometry curveSegments={12} text="日本" size={0.1} depth={0.03} font={'/noto.json'} />
 	<T.MeshStandardMaterial color="green" toneMapped={false} />
 </T.Mesh> -->
 
-<!-- <Attractor range={50} strength={0.000001} position={[0, 1.7, 0]} /> -->
+<!-- <Attractor range={50} strength={0.00001} position={[0, 1.7, 0]} /> -->

@@ -3,12 +3,19 @@
 	import { World } from '@threlte/rapier';
 	import { VRButton } from '@threlte/xr';
 	import HandScene from '$lib/hand/HandScene.svelte';
+	import { Studio } from '@threlte/studio';
 </script>
 
 <div>
 	<Canvas>
 		<World gravity={[0, -0.3, 0]}>
-			<HandScene />
+			{#if import.meta.env.VITE_ENABLE_STUDIO}
+				<Studio>
+					<HandScene />
+				</Studio>
+			{:else}
+				<HandScene />
+			{/if}
 		</World>
 	</Canvas>
 	<VRButton />
