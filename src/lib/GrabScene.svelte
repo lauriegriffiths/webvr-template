@@ -5,6 +5,7 @@
 	import { Spring } from 'svelte/motion';
 	import { Collider } from '@threlte/rapier';
 	import { BoxGeometry } from 'three';
+	import { Text } from '@threlte/extras';
 
 	const joint = useHandJoint('right', 'thumb-tip');
 	pointerControls('right');
@@ -63,7 +64,7 @@
 		}
 	});
 
-	const handColliderPosition = $derived(() => {
+	const handColliderPosition = $derived.by(() => {
 		if (joint.current) {
 			const { x, y, z } = joint.current.position;
 			return [x, y, z] as [number, number, number];
@@ -90,6 +91,16 @@
 		<T.MeshStandardMaterial color={'green'} />
 	</T.Group>
 {/if}
+<Text
+	text={JSON.stringify(handColliderPosition)}
+	color="purple"
+	fontSize={0.5}
+	anchorX="50%"
+	anchorY="100%"
+	oncreate={(ref) => {
+		ref.lookAt(10, 10, 10);
+	}}
+/>
 
 <T.Mesh
 	rotation.y={rotation}
