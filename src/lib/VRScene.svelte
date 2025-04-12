@@ -49,8 +49,6 @@
 	};
 </script>
 
-{@debug joint}
-
 <T.PerspectiveCamera
 	makeDefault
 	position={[10, 10, 10]}

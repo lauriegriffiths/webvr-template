@@ -20,7 +20,7 @@
 
 <Ground />
 
-<Debug />
+<!-- <Debug /> -->
 
 <Emitter />
 
