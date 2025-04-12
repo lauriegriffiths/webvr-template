@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { XR, Controller, Hand, useHandJoint, pointerControls } from '@threlte/xr';
 	import { currentWritable, T, useTask } from '@threlte/core';
 	import { interactivity } from '@threlte/extras';
@@ -62,6 +62,14 @@
 			}
 		}
 	});
+
+	const handColliderPosition = $derived(() => {
+		if (joint.current) {
+			const { x, y, z } = joint.current.position;
+			return [x, y, z] as [number, number, number];
+		}
+		return [0, 0, 0] as [number, number, number];
+	});
 </script>
 
 <T.PerspectiveCamera
@@ -75,11 +83,13 @@
 <T.DirectionalLight position={[0, 10, 10]} castShadow />
 <T.AmbientLight />
 
-<T.Group position={[0, 1, 0]}>
-	<Collider sensor shape={'cuboid'} args={[0.1, 0.1, 0.1]} />
-	<T.BoxGeometry args={[0.1, 0.1, 0.1]} />
-	<T.MeshStandardMaterial color={'green'} />
-</T.Group>
+{#if joint.current}
+	<T.Group position={handColliderPosition}>
+		<Collider sensor shape={'cuboid'} args={[0.1, 0.1, 0.1]} />
+		<T.BoxGeometry args={[0.1, 0.1, 0.1]} />
+		<T.MeshStandardMaterial color={'green'} />
+	</T.Group>
+{/if}
 
 <T.Mesh
 	rotation.y={rotation}
