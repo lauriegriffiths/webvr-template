@@ -11,7 +11,7 @@ const config = {
 		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
 		paths: {
 			// deploying to github pages
-			base: process.env.NODE_ENV === 'production' ? process.env.BASE_URL : '',
+			base: process.env.NODE_ENV === 'production' ? '/webvr-template' : '',
 
 			relative: false
 		},
