@@ -4,6 +4,7 @@
 	import { interactivity } from '@threlte/extras';
 	import { Spring } from 'svelte/motion';
 	import { Collider } from '@threlte/rapier';
+	import { BoxGeometry } from 'three';
 
 	const joint = useHandJoint('right', 'thumb-tip');
 	pointerControls('right');
@@ -74,26 +75,27 @@
 <T.DirectionalLight position={[0, 10, 10]} castShadow />
 <T.AmbientLight />
 
+<T.Group position={[0, 1, 0]}>
+	<Collider sensor shape={'cuboid'} args={[0.1, 0.1, 0.1]} />
+	<T.BoxGeometry args={[0.1, 0.1, 0.1]} />
+	<T.MeshStandardMaterial color={'green'} />
+</T.Group>
+
 <T.Mesh
 	rotation.y={rotation}
 	position.y={1}
 	scale={scale.current}
-	onpointerenter={() => {
-		scale.target = 2;
-	}}
-	onpointerleave={() => {
-		scale.target = 1;
-	}}
-	onclick={makeBigger}
 	castShadow
 	position={[-1, 1, -1]}
 >
 	<Collider
-		onsensorenter={() => (touching = true)}
+		onsensorenter={() => {
+			touching = true;
+			makeBigger();
+		}}
 		onsensorexit={() => (touching = false)}
-		sensor
-		shape={'cuboid'}
-		args={[1, 1, 1]}
+		shape={'ball'}
+		args={[1]}
 	/>
 	<T.SphereGeometry args={[0.5, 32, 32]} />
 	<T.MeshStandardMaterial {color} />
