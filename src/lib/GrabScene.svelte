@@ -25,7 +25,7 @@
 
 	interactivity();
 
-	let body: RigidBody = $props();
+	let body: RigidBody = $state();
 	const { start, stop } = useTask(
 		() => {
 			if (joint.current === undefined || body === undefined) return;
@@ -94,14 +94,6 @@
 				console.log('joint', x, y, z);
 			}
 		}
-	});
-
-	const handColliderPosition = $derived.by(() => {
-		if (joint.current) {
-			const { x, y, z } = joint.current.position;
-			return [x, y, z] as [number, number, number];
-		}
-		return [0, 0, 0] as [number, number, number];
 	});
 </script>
 
