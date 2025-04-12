@@ -95,7 +95,7 @@
 	</T.Group>
 {/if}
 <Text
-	text={JSON.stringify(rightController.current)}
+	text={JSON.stringify(joint.current)}
 	color="purple"
 	fontSize={0.5}
 	anchorX="50%"
