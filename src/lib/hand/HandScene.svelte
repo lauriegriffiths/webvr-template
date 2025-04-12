@@ -5,6 +5,7 @@
 	import { Attractor, Debug } from '@threlte/rapier';
 	import Cubes from './Cube.svelte';
 	import PhysicsHands from './PhysicsHands.svelte';
+	import Ground from '$lib/physics/Ground.svelte';
 
 	let debug = false;
 </script>
@@ -23,8 +24,9 @@
 </XR>
 
 <Cubes />
+<Ground />
 
-<T.PerspectiveCamera makeDefault position={[0, 1, 1]} oncreate={(ref) => ref.lookAt(0, 1.8, 0)} />
+<T.PerspectiveCamera makeDefault position={[1, 1, 1]} oncreate={(ref) => ref.lookAt(0, 0.5, 0)} />
 
 <T.AmbientLight />
 
@@ -44,4 +46,4 @@
 	<T.MeshStandardMaterial color="green" toneMapped={false} />
 </T.Mesh> -->
 
-<Attractor range={50} strength={0.0000001} position={[0, 1.7, 0]} />
+<!-- <Attractor range={50} strength={0.000001} position={[0, 1.7, 0]} /> -->

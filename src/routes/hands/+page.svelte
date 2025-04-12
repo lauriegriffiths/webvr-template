@@ -7,7 +7,7 @@
 
 <div>
 	<Canvas>
-		<World gravity={[0, 0, 0]}>
+		<World gravity={[0, -0.3, 0]}>
 			<HandScene />
 		</World>
 	</Canvas>
