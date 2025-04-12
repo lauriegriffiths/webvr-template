@@ -5,7 +5,6 @@
 </script>
 
 <script lang="ts">
-	import Doghead from '$lib/doghead.svelte';
 	import { T } from '@threlte/core';
 	import { Collider, RigidBody, type ContactEvent } from '@threlte/rapier';
 	import { writable } from 'svelte/store';
