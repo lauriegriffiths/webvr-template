@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import { Hand, XR, useXR } from '@threlte/xr';
-	import { Text } from '@threlte/extras';
+	import { Text, Align, Text3DGeometry } from '@threlte/extras';
 	import { Attractor, Debug } from '@threlte/rapier';
 	import Cubes from './Cube.svelte';
 	import PhysicsHands from './PhysicsHands.svelte';
@@ -39,4 +39,9 @@
 	target.z={0}
 />
 
-<Attractor range={50} strength={0.000001} position={[0, 1.7, 0]} />
+<!-- <T.Mesh position={[0, 1.7, 0]}>
+	<Text3DGeometry curveSegments={12} text="日本" size={0.1} depth={0.03} font={'/noto.json'} />
+	<T.MeshStandardMaterial color="green" toneMapped={false} />
+</T.Mesh> -->
+
+<Attractor range={50} strength={0.0000001} position={[0, 1.7, 0]} />
