@@ -35,12 +35,14 @@
 
 {#if radius}
 	<RigidBody bind:rigidBody={body} type="kinematicPosition">
-		<Collider sensor shape="ball" args={[radius]} />
 		{#if handJointName === 'index-finger-tip'}
+			<Collider sensor shape="ball" args={[radius * 2]} />
 			<T.Mesh>
 				<T.SphereGeometry args={[radius * 2]} />
 				<T.MeshStandardMaterial color="hotpink" />
 			</T.Mesh>
+		{:else}
+			<Collider shape="ball" args={[radius]} />
 		{/if}
 	</RigidBody>
 {/if}
