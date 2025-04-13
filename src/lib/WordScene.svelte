@@ -25,15 +25,15 @@
 	let headsetPosition = $derived([headset.position.x, headset.position.y, headset.position.z]);
 
 	const WORD_LIST = [
-		'こんにちは',
-		'さようなら',
-		'ありがとう',
-		'すみません',
-		'おはよう',
-		'こんばんは',
-		'おやすみなさい',
-		'いただきます',
-		'ごちそうさまでした'
+		' こんにちは',
+		' さようなら',
+		' ありがとう',
+		' すみません',
+		' おはよう',
+		' こんばんは',
+		' おやすみなさい',
+		' いただきます',
+		' ごちそうさまでした'
 	];
 
 	const getTargetWord = () => {
@@ -49,6 +49,7 @@
 		targetWord
 			.split('')
 			.map((letter, index) => (found[index] ? letter : '?'))
+			.splice(1)
 			.join('')
 	);
 	let font = useLoader(FontLoader).load('noto.json');
@@ -66,7 +67,12 @@
 	let score = $state(0);
 
 	$effect(() => {
-		const wordComplete = found.every((letter) => letter === true);
+		if (found.length <= 1) {
+			return;
+		}
+		//count number of trues in found
+		const foundCount = found.reduce((acc, val) => (val ? acc + 1 : acc), 0);
+		const wordComplete = foundCount >= found.length - 1;
 		if (wordComplete) {
 			console.log('Word complete!');
 			resetGame();
@@ -81,12 +87,24 @@
 	const letterChosen = (letterIndex: number) => {
 		console.log(`Letter chosen: ${letters[letterIndex]}`);
 
-		for (let i = 0; i < targetWord.length; i++) {
-			if (targetWord[i] === letters[letterIndex]) {
-				found[i] = true;
-				score += 1;
-			}
+		//find the position of the first false in found (excluding position 0)
+		const firstFalseIndex = found.findIndex((val, index) => !val && index > 0);
+
+		//compare the clicked letter with the letter at the first false index
+
+		if (firstFalseIndex !== -1 && letters[letterIndex] === targetWord[firstFalseIndex]) {
+			found[firstFalseIndex] = true;
+			score += 1;
+		} else {
+			console.log('Wrong letter!');
 		}
+
+		// for (let i = 0; i < targetWord.length; i++) {
+		// 	if (targetWord[i] === letters[letterIndex]) {
+		// 		found[i] = true;
+		// 		score += 1;
+		// 	}
+		// }
 	};
 
 	onMount(() => {});
@@ -126,8 +144,8 @@
 	</T.Mesh>
 </HUD>
 
-{#each letters as letter, index (index)}
-	{#if !found[index]}
+{#each letters as letter, index (index.toString())}
+	{#if found.length > 0 && !found[index]}
 		<T.Group position={[0.1 * (index + 1), 1, 0]}>
 			<RigidBody onsensorenter={() => letterChosen(index)} linearDamping={0.5} angularDamping={0.2}>
 				{#if $font}
