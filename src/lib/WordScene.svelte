@@ -9,7 +9,8 @@
 		AudioListener,
 		HUD,
 		useViewport,
-		interactivity
+		interactivity,
+		Suspense
 	} from '@threlte/extras';
 	import { Attractor, Debug, RigidBody, AutoColliders } from '@threlte/rapier';
 	import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -74,11 +75,9 @@
 	});
 	const resetGame = () => {
 		const tw = getTargetWord();
-		setTimeout(() => {
-			targetWord = tw;
-			found = Array(tw.length).fill(false);
-			letters = [...tw.split('')];
-		}, 2000);
+		targetWord = tw;
+		found = Array(tw.length).fill(false);
+		letters = [...tw.split('')];
 	};
 
 	const letterChosen = (letterIndex: number) => {
@@ -142,7 +141,7 @@
 					<AutoColliders shape={'convexHull'} restitution={0} contactForceEventThreshold={10}>
 						<T.Mesh onclick={() => letterChosen(index)}>
 							<Text3DGeometry
-								curveSegments={4}
+								curveSegments={1}
 								text={letter}
 								size={0.2}
 								depth={0.03}
