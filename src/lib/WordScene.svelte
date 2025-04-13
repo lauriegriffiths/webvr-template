@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { T, useLoader } from '@threlte/core';
-	import { Hand, XR, useXR } from '@threlte/xr';
+	import { Hand, XR, useXR, Headset } from '@threlte/xr';
 	import {
 		Text,
 		Align,
@@ -21,7 +21,7 @@
 	const limit = 5;
 	const startColor = 'hotpink';
 	let colors = $state(Array(limit).fill(startColor));
-	const word = ' こんにちは';
+	const word = 'What a wonderful world';
 	let letters = $state(word.split(''));
 	let found = $state(Array(limit).fill(false));
 	let hudLetters = $derived(letters.map((letter, index) => (found[index] ? letter : '?')));
@@ -34,6 +34,12 @@
 	//viewport and hud
 	const viewport = useViewport();
 	interactivity();
+
+	//game
+
+	const letterChosen = (letterIndex) => {
+		found[letterIndex] = true;
+	};
 </script>
 
 {#if debug}
@@ -46,11 +52,23 @@
 
 	<PhysicsHands />
 
-	<Text position={[0, 1.7, -1]} text="Pinch to toggle physics debug." />
+	<Text position={[0, 1.7, -1]} text={hudLetters} />
 	<Attractor range={500} strength={ATTRACTOR_STRENGTH} />
 	{#snippet fallback()}
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} position={[0.5, 1, 5.2]} />
 	{/snippet}
+	<Headset>
+		<T.Mesh position={[$viewport.width / 2 - 1, $viewport.height / 2 - 1, 0]}>
+			<Text3DGeometry
+				curveSegments={12}
+				text={hudLetters}
+				size={0.5}
+				depth={0.03}
+				font={'/noto.json'}
+			/>
+			<T.MeshStandardMaterial color="green" toneMapped={false} />
+		</T.Mesh>
+	</Headset>
 </XR>
 
 <HUD>
@@ -67,21 +85,29 @@
 </HUD>
 
 {#if $font}
-	{#each letters as letter, index (index + 1)}
-		<T.Group position={[0.1 * (index + 1), 1, 0]}>
-			<RigidBody
-				onsensorenter={() => (colors[index] = 'blue')}
-				linearDamping={0.5}
-				angularDamping={0.2}
-			>
-				<AutoColliders shape={'convexHull'} restitution={0} contactForceEventThreshold={10}>
-					<T.Mesh onclick={() => (found[index] = true)}>
-						<Text3DGeometry curveSegments={4} text={letter} size={0.2} depth={0.03} font={$font} />
-						<T.MeshStandardMaterial color="#FD3F00" toneMapped={true} roughness={0.1} />
-					</T.Mesh>
-				</AutoColliders>
-			</RigidBody>
-		</T.Group>
+	{#each letters as letter, index (index)}
+		{#if !found[index]}
+			<T.Group position={[0.1 * (index + 1), 1, 0]}>
+				<RigidBody
+					onsensorenter={() => letterChosen(index)}
+					linearDamping={0.5}
+					angularDamping={0.2}
+				>
+					<AutoColliders shape={'convexHull'} restitution={0} contactForceEventThreshold={10}>
+						<T.Mesh onclick={() => letterChosen(index)}>
+							<Text3DGeometry
+								curveSegments={4}
+								text={letter}
+								size={0.2}
+								depth={0.03}
+								font={$font}
+							/>
+							<T.MeshStandardMaterial color="#FD3F00" toneMapped={true} roughness={0.1} />
+						</T.Mesh>
+					</AutoColliders>
+				</RigidBody>
+			</T.Group>
+		{/if}
 	{/each}
 {/if}
 
