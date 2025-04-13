@@ -11,7 +11,7 @@
 		interactivity,
 		Suspense
 	} from '@threlte/extras';
-	import { Attractor, Debug, RigidBody, AutoColliders } from '@threlte/rapier';
+	import { Attractor, Debug, RigidBody, AutoColliders, Collider } from '@threlte/rapier';
 	import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 	import Letter from '$lib/Letter.svelte';
 	import PhysicsHands from './hand/PhysicsHands.svelte';
@@ -116,7 +116,7 @@
 
 <XR>
 	<Hand left />
-	<Hand right onpinchend={() => (debug = !debug)} />
+	<Hand right />
 
 	<PhysicsHands />
 
@@ -144,12 +144,13 @@
 	</T.Mesh>
 </HUD>
 
-{#each letters as letter, index (index.toString())}
+{#each letters as letter, index (index)}
 	{#if found.length > 0 && !found[index]}
 		<T.Group position={[0.1 * (index + 1), 1, 0]}>
 			<RigidBody onsensorenter={() => letterChosen(index)} linearDamping={0.5} angularDamping={0.2}>
 				{#if $font}
-					<AutoColliders shape={'convexHull'} restitution={0} contactForceEventThreshold={10}>
+					<Collider shape={'ball'} args={[0.1]} />
+					<AutoColliders shape={'convexHull'} restitution={0}>
 						<T.Mesh onclick={() => letterChosen(index)}>
 							<Text3DGeometry
 								curveSegments={1}
