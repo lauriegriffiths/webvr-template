@@ -57,7 +57,9 @@
 	<PhysicsHands />
 
 	<Text position={[0, 1.7, -1]} text={hudLetters} />
-	<Attractor range={500} strength={ATTRACTOR_STRENGTH} />
+	<Headset>
+		<Attractor range={500} strength={ATTRACTOR_STRENGTH} />
+	</Headset>
 	{#snippet fallback()}
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} position={[0.5, 1, 5.2]} />
 	{/snippet}
