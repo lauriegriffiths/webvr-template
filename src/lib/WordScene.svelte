@@ -97,7 +97,7 @@
 {/if}
 
 <XR>
-	<Hand left onpinchend={resetGame} />
+	<Hand left onpinchend={()={}} />
 	<Hand right onpinchend={() => (debug = !debug)} />
 
 	<PhysicsHands />
