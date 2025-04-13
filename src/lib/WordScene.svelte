@@ -17,18 +17,39 @@
 	import PhysicsHands from './hand/PhysicsHands.svelte';
 
 	import Ground from '$lib/physics/Ground.svelte';
+	import { AmbientLight } from 'three';
+	import { onMount } from 'svelte';
 
 	const headset = useHeadset();
 
 	let headsetPosition = $derived([headset.position.x, headset.position.y, headset.position.z]);
 
+	const WORD_LIST = [
+		' こんにちは',
+		' さようなら',
+		' ありがとう',
+		' すみません',
+		' おはよう',
+		' こんばんは',
+		' おやすみなさい',
+		' いただきます',
+		' ごちそうさまでした'
+	];
+
+	const allLetters = WORD_LIST.join('').split('');
+
 	const limit = 5;
 	const startColor = 'hotpink';
 	let colors = $state(Array(limit).fill(startColor));
-	const word = ' こんにちは';
-	let letters = $state(word.split(''));
-	let found = $state(Array(limit).fill(false));
-	let hudLetters = $derived(letters.map((letter, index) => (found[index] ? letter : '?')).slice(1));
+	let targetWord = $state('');
+	let letters: string[] = $state([]);
+	let found: boolean[] = $state([]);
+	let hudLetters = $derived(
+		letters
+			.map((letter, index) => (found[index] ? letter : '?'))
+			.slice(1)
+			.join('')
+	);
 	let font = useLoader(FontLoader).load('noto.json');
 
 	let debug = $state(false);
@@ -41,9 +62,33 @@
 
 	//game
 
-	const letterChosen = (letterIndex) => {
-		found[letterIndex] = true;
+	let score = $state(0);
+
+	const setTargetWord = () => {
+		targetWord = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
 	};
+	const resetGame = () => {
+		setTargetWord();
+		//reset letters the target word repeated 3 times, shuffled
+		letters = [...targetWord.split(''), ...targetWord.split(''), ...targetWord.split('')].sort(
+			() => Math.random() - 0.5
+		);
+		found = Array(targetWord.length).fill(false);
+	};
+
+	const letterChosen = (letterIndex: number) => {
+		console.log('targetWord', targetWord);
+		for (let i = 0; i < targetWord.length; i++) {
+			if (targetWord[i] === letters[letterIndex]) {
+				found[i] = true;
+				score += 1;
+			}
+		}
+	};
+
+	onMount(() => {
+		resetGame();
+	});
 </script>
 
 {#if debug}
@@ -51,43 +96,23 @@
 {/if}
 
 <XR>
-	<Hand left onpinchend={() => (debug = !debug)} />
+	<Hand left onpinchend={resetGame} />
 	<Hand right onpinchend={() => (debug = !debug)} />
 
 	<PhysicsHands />
 
 	<Text position={[0, 1.7, -1]} text={hudLetters} />
+	<Text position={[0, 2.5, -1]} text={score} fontSize={0.2} color="blue" />
 	<Headset>
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} />
 	</Headset>
 	{#snippet fallback()}
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} position={[0.5, 1, 5.2]} />
 	{/snippet}
-
-	<T.Mesh position={headsetPosition}>
-		<Text3DGeometry
-			curveSegments={12}
-			text={hudLetters}
-			size={0.5}
-			depth={0.03}
-			font={'/noto.json'}
-		/>
-		<T.MeshStandardMaterial color="green" toneMapped={false} />
-	</T.Mesh>
 </XR>
 
-<T.Mesh position={[0, 1.7, -1]}>
-	<Text3DGeometry
-		curveSegments={12}
-		text={hudLetters}
-		size={0.2}
-		depth={0.03}
-		font={'/noto.json'}
-	/>
-	<T.MeshStandardMaterial color="blue" toneMapped={false} />
-</T.Mesh>
-
 <HUD>
+	<T.AmbientLight intensity={0.5} />
 	<T.Mesh position={[$viewport.width / 2 - 1, $viewport.height / 2 - 1, 0]}>
 		<Text3DGeometry
 			curveSegments={12}
@@ -96,7 +121,7 @@
 			depth={0.03}
 			font={'/noto.json'}
 		/>
-		<T.MeshStandardMaterial color="green" toneMapped={false} />
+		<T.MeshStandardMaterial color="blue" toneMapped={false} />
 	</T.Mesh>
 </HUD>
 
