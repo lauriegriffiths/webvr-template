@@ -10,7 +10,8 @@
 		HUD,
 		useViewport,
 		interactivity,
-		Suspense
+		Suspense,
+		Audio
 	} from '@threlte/extras';
 	import { Attractor, Debug, RigidBody, AutoColliders } from '@threlte/rapier';
 	import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -39,6 +40,7 @@
 
 	const allLetters = WORD_LIST.join('').split('');
 
+	let autoplay = $state(false);
 	let targetWord = $state('');
 	let letters: string[] = $state([]);
 	let found: boolean[] = $state([]);
@@ -106,9 +108,11 @@
 	<PhysicsHands />
 
 	<Text position={[0, 1.7, -1]} text={hudLetters} />
+	<Audio position={[0, 1.7, -1]} src={'/audio/track.mp3'} autoplay />
 	<Text position={[0, 2.5, -1]} text={score} fontSize={0.2} color="blue" />
 	<Headset>
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} />
+		<AudioListener />
 	</Headset>
 	{#snippet fallback()}
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} position={[0.5, 1, 5.2]} />
@@ -159,7 +163,6 @@
 <Ground />
 <T.PerspectiveCamera makeDefault position={[0.5, 1, 5.2]} oncreate={(ref) => ref.lookAt(0, 0.5, 0)}>
 	<OrbitControls enableZoom={false} />
-	<AudioListener />
 </T.PerspectiveCamera>
 
 <T.AmbientLight />
