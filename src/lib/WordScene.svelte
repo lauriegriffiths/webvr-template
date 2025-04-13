@@ -6,12 +6,10 @@
 		Align,
 		Text3DGeometry,
 		OrbitControls,
-		AudioListener,
 		HUD,
 		useViewport,
 		interactivity,
-		Suspense,
-		Audio
+		Suspense
 	} from '@threlte/extras';
 	import { Attractor, Debug, RigidBody, AutoColliders } from '@threlte/rapier';
 	import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -38,12 +36,15 @@
 		'ごちそうさまでした'
 	];
 
+	const getTargetWord = () => {
+		return WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
+	};
+
 	const allLetters = WORD_LIST.join('').split('');
 
-	let autoplay = $state(false);
-	let targetWord = $state('');
-	let letters: string[] = $state([]);
-	let found: boolean[] = $state([]);
+	let targetWord = $state(getTargetWord());
+	let letters: string[] = $derived([...targetWord.split('')]);
+	let found: boolean[] = $state(Array(targetWord.length).fill(false));
 	let hudLetters = $derived(
 		targetWord
 			.split('')
@@ -64,10 +65,6 @@
 
 	let score = $state(0);
 
-	const getTargetWord = () => {
-		return WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
-	};
-
 	$effect(() => {
 		const wordComplete = found.every((letter) => letter === true);
 		if (wordComplete) {
@@ -79,11 +76,11 @@
 		const tw = getTargetWord();
 		targetWord = tw;
 		found = Array(tw.length).fill(false);
-		letters = [...tw.split('')];
 	};
 
 	const letterChosen = (letterIndex: number) => {
-		console.log('targetWord', targetWord);
+		console.log(`Letter chosen: ${letters[letterIndex]}`);
+
 		for (let i = 0; i < targetWord.length; i++) {
 			if (targetWord[i] === letters[letterIndex]) {
 				found[i] = true;
@@ -92,9 +89,7 @@
 		}
 	};
 
-	onMount(() => {
-		resetGame();
-	});
+	onMount(() => {});
 </script>
 
 {#if debug}
@@ -108,11 +103,9 @@
 	<PhysicsHands />
 
 	<Text position={[0, 1.7, -1]} text={hudLetters} />
-	<Audio position={[0, 1.7, -1]} src={'/audio/track.mp3'} autoplay />
 	<Text position={[0, 2.5, -1]} text={score} fontSize={0.2} color="blue" />
 	<Headset>
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} />
-		<AudioListener />
 	</Headset>
 	{#snippet fallback()}
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} position={[0.5, 1, 5.2]} />
