@@ -25,29 +25,26 @@
 	let headsetPosition = $derived([headset.position.x, headset.position.y, headset.position.z]);
 
 	const WORD_LIST = [
-		' こんにちは',
-		' さようなら',
-		' ありがとう',
-		' すみません',
-		' おはよう',
-		' こんばんは',
-		' おやすみなさい',
-		' いただきます',
-		' ごちそうさまでした'
+		'こんにちは',
+		'さようなら',
+		'ありがとう',
+		'すみません',
+		'おはよう',
+		'こんばんは',
+		'おやすみなさい',
+		'いただきます',
+		'ごちそうさまでした'
 	];
 
 	const allLetters = WORD_LIST.join('').split('');
 
-	const limit = 5;
-	const startColor = 'hotpink';
-	let colors = $state(Array(limit).fill(startColor));
 	let targetWord = $state('');
 	let letters: string[] = $state([]);
 	let found: boolean[] = $state([]);
 	let hudLetters = $derived(
-		letters
+		targetWord
+			.split('')
 			.map((letter, index) => (found[index] ? letter : '?'))
-			.slice(1)
 			.join('')
 	);
 	let font = useLoader(FontLoader).load('noto.json');
@@ -64,16 +61,24 @@
 
 	let score = $state(0);
 
-	const setTargetWord = () => {
-		targetWord = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
+	const getTargetWord = () => {
+		return WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
 	};
+
+	$effect(() => {
+		const wordComplete = found.every((letter) => letter === true);
+		if (wordComplete) {
+			console.log('Word complete!');
+			resetGame();
+		}
+	});
 	const resetGame = () => {
-		setTargetWord();
-		//reset letters the target word repeated 3 times, shuffled
-		letters = [...targetWord.split(''), ...targetWord.split(''), ...targetWord.split('')].sort(
-			() => Math.random() - 0.5
-		);
-		found = Array(targetWord.length).fill(false);
+		const tw = getTargetWord();
+		setTimeout(() => {
+			targetWord = tw;
+			found = Array(tw.length).fill(false);
+			letters = [...tw.split('')];
+		}, 2000);
 	};
 
 	const letterChosen = (letterIndex: number) => {
