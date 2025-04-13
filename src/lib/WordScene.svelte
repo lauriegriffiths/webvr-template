@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { T, useLoader } from '@threlte/core';
-	import { Hand, XR, useXR, Headset } from '@threlte/xr';
+	import { Hand, XR, useXR, Headset, useHeadset } from '@threlte/xr';
 	import {
 		Text,
 		Align,
@@ -17,6 +17,10 @@
 	import PhysicsHands from './hand/PhysicsHands.svelte';
 
 	import Ground from '$lib/physics/Ground.svelte';
+
+	const headset = useHeadset();
+
+	let headsetPosition = $derived([headset.position.x, headset.position.y, headset.position.z]);
 
 	const limit = 5;
 	const startColor = 'hotpink';
@@ -57,19 +61,18 @@
 	{#snippet fallback()}
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} position={[0.5, 1, 5.2]} />
 	{/snippet}
-	<Headset>
-		<T.Mesh position={[$viewport.width / 2 - 1, $viewport.height / 2 - 1, 0]}>
-			<Text3DGeometry
-				curveSegments={12}
-				text={hudLetters}
-				size={0.5}
-				depth={0.03}
-				font={'/noto.json'}
-			/>
-			<T.MeshStandardMaterial color="green" toneMapped={false} />
-		</T.Mesh>
-	</Headset>
 </XR>
+
+<T.Mesh position={headsetPosition}>
+	<Text3DGeometry
+		curveSegments={12}
+		text={hudLetters}
+		size={0.5}
+		depth={0.03}
+		font={'/noto.json'}
+	/>
+	<T.MeshStandardMaterial color="green" toneMapped={false} />
+</T.Mesh>
 
 <HUD>
 	<T.Mesh position={[$viewport.width / 2 - 1, $viewport.height / 2 - 1, 0]}>
