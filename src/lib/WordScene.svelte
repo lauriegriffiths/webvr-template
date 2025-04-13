@@ -25,10 +25,10 @@
 	const limit = 5;
 	const startColor = 'hotpink';
 	let colors = $state(Array(limit).fill(startColor));
-	const word = 'What a wonderful world';
+	const word = ' こんにちは';
 	let letters = $state(word.split(''));
 	let found = $state(Array(limit).fill(false));
-	let hudLetters = $derived(letters.map((letter, index) => (found[index] ? letter : '?')));
+	let hudLetters = $derived(letters.map((letter, index) => (found[index] ? letter : '?')).slice(1));
 	let font = useLoader(FontLoader).load('noto.json');
 
 	let debug = $state(false);
@@ -63,17 +63,28 @@
 	{#snippet fallback()}
 		<Attractor range={500} strength={ATTRACTOR_STRENGTH} position={[0.5, 1, 5.2]} />
 	{/snippet}
+
+	<T.Mesh position={headsetPosition}>
+		<Text3DGeometry
+			curveSegments={12}
+			text={hudLetters}
+			size={0.5}
+			depth={0.03}
+			font={'/noto.json'}
+		/>
+		<T.MeshStandardMaterial color="green" toneMapped={false} />
+	</T.Mesh>
 </XR>
 
-<T.Mesh position={headsetPosition}>
+<T.Mesh position={[0, 1.7, -1]}>
 	<Text3DGeometry
 		curveSegments={12}
 		text={hudLetters}
-		size={0.5}
+		size={0.2}
 		depth={0.03}
 		font={'/noto.json'}
 	/>
-	<T.MeshStandardMaterial color="green" toneMapped={false} />
+	<T.MeshStandardMaterial color="blue" toneMapped={false} />
 </T.Mesh>
 
 <HUD>
