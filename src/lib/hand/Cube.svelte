@@ -32,11 +32,16 @@
 {#if $font}
 	{#each letters as letter, index (index + 1)}
 		<T.Group position={[0.1 * (index + 1), 1, 0]}>
-			<RigidBody type={'dynamic'} onsensorenter={() => (colors[index] = 'blue')}>
-				<AutoColliders shape={'convexHull'}>
+			<RigidBody
+				type={'dynamic'}
+				onsensorenter={() => (colors[index] = 'blue')}
+				linearDamping={3}
+				angularDamping={3}
+			>
+				<AutoColliders shape={'convexHull'} restitution={0} contactForceEventThreshold={10}>
 					<T.Mesh>
 						<Text3DGeometry curveSegments={4} text={letter} size={0.2} depth={0.03} font={$font} />
-						<T.MeshStandardMaterial color={'pink'} toneMapped={false} />
+						<T.MeshStandardMaterial color="#FD3F00" toneMapped={true} roughness={0.1} />
 					</T.Mesh>
 				</AutoColliders>
 			</RigidBody>

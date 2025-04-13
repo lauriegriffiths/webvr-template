@@ -6,9 +6,9 @@
 	import { Studio } from '@threlte/studio';
 </script>
 
-<div>
+<div class="canvas">
 	<Canvas>
-		<World gravity={[0, -0.3, 0]}>
+		<World>
 			{#if import.meta.env.VITE_ENABLE_STUDIO}
 				<Studio>
 					<HandScene />
@@ -22,7 +22,13 @@
 </div>
 
 <style>
-	div {
-		height: 100%;
+	/* global */
+	:global(body) {
+		margin: 0;
+		padding: 0;
+	}
+	.canvas {
+		width: 100vw;
+		height: 100vh;
 	}
 </style>
