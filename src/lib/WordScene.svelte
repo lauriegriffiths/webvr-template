@@ -97,7 +97,7 @@
 {/if}
 
 <XR>
-	<Hand left onpinchend={()={}} />
+	<Hand left />
 	<Hand right onpinchend={() => (debug = !debug)} />
 
 	<PhysicsHands />
@@ -126,15 +126,11 @@
 	</T.Mesh>
 </HUD>
 
-{#if $font}
-	{#each letters as letter, index (index)}
-		{#if !found[index]}
-			<T.Group position={[0.1 * (index + 1), 1, 0]}>
-				<RigidBody
-					onsensorenter={() => letterChosen(index)}
-					linearDamping={0.5}
-					angularDamping={0.2}
-				>
+{#each letters as letter, index (index)}
+	{#if !found[index]}
+		<T.Group position={[0.1 * (index + 1), 1, 0]}>
+			<RigidBody onsensorenter={() => letterChosen(index)} linearDamping={0.5} angularDamping={0.2}>
+				{#if $font}
 					<AutoColliders shape={'convexHull'} restitution={0} contactForceEventThreshold={10}>
 						<T.Mesh onclick={() => letterChosen(index)}>
 							<Text3DGeometry
@@ -147,11 +143,18 @@
 							<T.MeshStandardMaterial color="#FD3F00" toneMapped={true} roughness={0.1} />
 						</T.Mesh>
 					</AutoColliders>
-				</RigidBody>
-			</T.Group>
-		{/if}
-	{/each}
-{/if}
+				{:else}
+					<AutoColliders shape={'ball'} restitution={0} contactForceEventThreshold={10}>
+						<T.Mesh onclick={() => letterChosen(index)}>
+							<T.SphereGeometry args={[0.1]} />
+							<T.MeshStandardMaterial color="#FD3F00" toneMapped={true} roughness={0.1} />
+						</T.Mesh>
+					</AutoColliders>
+				{/if}
+			</RigidBody>
+		</T.Group>
+	{/if}
+{/each}
 
 <Ground />
 <T.PerspectiveCamera makeDefault position={[0.5, 1, 5.2]} oncreate={(ref) => ref.lookAt(0, 0.5, 0)}>
